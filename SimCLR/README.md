@@ -22,7 +22,7 @@ Before running SimCLR, make sure you choose the correct running configurations. 
 
 ```python
 
-python run.py -data ./datasets -dataset-name stl10 --log-every-n-steps 100 --epochs 100 
+python run.py -data ./datasets -dataset_name stl10 --log-every-n-steps 100 --epochs 100 
 
 ```
 
