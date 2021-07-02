@@ -165,7 +165,7 @@ if __name__ == '__main__':
 
     optimizer = optim.Adam(model.parameters(), lr = args.lr, weight_decay=0.0001)
 
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.CrossEntropyLoss().cuda()
 
     torch.cuda.manual_seed(1) # fixing seed according to MCD work
 
