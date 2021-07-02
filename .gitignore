@@ -1,2 +1,5 @@
 SimCLR/runs/*
 SimCLR/datasets/*
+*.mat
+*.pkl
+*.pth
