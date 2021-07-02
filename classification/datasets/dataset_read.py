@@ -29,7 +29,7 @@ def return_dataset(data, scale=False, usps=False, all_use='no'):
 
     return train_image, train_label, test_image, test_label
 
-
+# we don't need target just source
 def dataset_read(source, target, batch_size, scale=False, all_use='no'):
     S = {}
     S_test = {}

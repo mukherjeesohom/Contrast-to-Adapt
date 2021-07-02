@@ -53,7 +53,8 @@ class PairedData(object):
 class UnalignedDataLoader():
     def initialize(self, source, target, batch_size1, batch_size2, scale=32):
         transform = transforms.Compose([
-            transforms.Scale(scale),
+            # transforms.Scale(scale),
+            transforms.Resize(scale),
             transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         ])

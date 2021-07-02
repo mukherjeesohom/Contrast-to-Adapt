@@ -44,11 +44,9 @@ class Dataset(data.Dataset):
 
         if self.target_transform is not None:
             target = self.target_transform(target)
-
         if self.transform is not None:
             img = self.transform(img)
             #  return img, target
-            
         return img, target
         
     def __len__(self):
