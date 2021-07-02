@@ -33,9 +33,9 @@ def train_val_loop(model, epochs:int, train_loader, val_loader, optimizer, crite
         model.train()
         running_loss = 0
 
-        for i, samples in enumerate(train_loader):
-            inputs = samples['image'].to(device)
-            labels = samples['label'].to(device).long()
+        for batch_idx, samples in enumerate(train_loader):
+            inputs = samples[0].to(device)
+            labels = samples[1].to(device)
             # labels = labels.squeeze(1
             optimizer.zero_grad()
             outputs = model(inputs)
@@ -51,20 +51,22 @@ def train_val_loop(model, epochs:int, train_loader, val_loader, optimizer, crite
                 # changing LR
                 scheduler.step()
 
-            if i%60 == 0: # intermediate progress printing
-                print("epoch{}, iter{}, running loss: {}".format(epoch, i, running_loss/(bs*(i+1))))
+            if batch_idx % print_interval == 0: # intermediate progress printing
+                print("Epoch{}, iter{}, running loss: {}".format(epoch, batch_idx, running_loss/(bs*(batch_idx+1))))
 
         loss_train.append(running_loss/len(train_loader))
 
-        print("epoch{}, Training loss: {}".format(epoch, running_loss/len(train_loader)))
-        torch.save(model.state_dict(), f'../weights/T{task}/epoch_{epoch}.pth')
+        print("Epoch{}, Training loss: {}".format(epoch, running_loss/len(train_loader)))
+        
+        if epoch % save_epoch == 0:
+            torch.save(model.state_dict(), f'{chk_dir}/epoch_{epoch}.pth')
 
         #Validation
         model.eval()
         running_loss_val = 0
         for i, samples in enumerate(val_loader):
-            inputs = samples['image'].to(device)
-            labels = samples['label'].to(device).long()
+            inputs = samples[0].to(device)
+            labels = samples[1].to(device)
             # labels = labels.squeeze(1)
 
             with torch.no_grad(): 
@@ -86,8 +88,8 @@ if __name__ == '__main__':
 
     # Training settings
     parser = argparse.ArgumentParser(description='Pretraining')
-    # parser.add_argument('--all_use', type=str, default='no', metavar='N',
-                        # help='use all training data? in usps adaptation')
+    parser.add_argument('--all_use', type=str, default='no', metavar='N',
+                        help='use all training data? in usps adaptation')
     parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                         help='input batch size for training (default: 64)')
     parser.add_argument('--checkpoint_dir', type=str, default='checkpoint', metavar='N',
@@ -135,7 +137,7 @@ if __name__ == '__main__':
     checkpoint_dir = args.checkpoint_dir
     save_epoch = args.save_epoch
     # use_abs_diff = args.use_abs_diff
-    # all_use = args.all_use
+    all_use = args.all_use
     print_interval = 100
 
     if source == 'svhn':
@@ -165,6 +167,8 @@ if __name__ == '__main__':
 
     torch.cuda.manual_seed(1) # fixing seed according to MCD work
 
-    train_val_loop(model, args.max_epoch, train_loader, val_loader,
+    loss_train, loss_val = train_val_loop(model, args.max_epoch, train_loader, val_loader,
                     optimizer, criterion, batch_size, device,
                     checkpoint_dir, save_epoch, print_interval)
+
+    # create and save the plot

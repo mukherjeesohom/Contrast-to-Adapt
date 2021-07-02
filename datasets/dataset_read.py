@@ -63,10 +63,10 @@ def dataset_read(source, batch_size, scale=False, all_use='no'):
     scale = 40 if source == 'synth' else 28 if source == 'usps' else 32
     # train_loader = UnalignedDataLoader()
 
-    train_loader = create_DataLoader(S, batch_size, scale=scale)
+    train_loader = create_DataLoader(S, batch_size, scale=scale, shuffle=True)
     # dataset = train_loader.load_data()
     # test_loader = UnalignedDataLoader()
     
-    val_loader = create_DataLoader(S_test, batch_size, scale=scale)
+    val_loader = create_DataLoader(S_test, batch_size, scale=scale, shuffle=False)
     # dataset_test = test_loader.load_data()
     return train_loader, val_loader

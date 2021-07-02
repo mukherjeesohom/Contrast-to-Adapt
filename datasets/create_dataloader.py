@@ -50,7 +50,7 @@ from datasets import Dataset
 #                     'T': B, 'T_label': B_paths}
 
 
-def create_DataLoader(self, source, batch_size1, scale=32):
+def create_DataLoader(self, source, batch_size1, scale=32, shuffle=False, workers=4):
         transform = transforms.Compose([
             # transforms.Scale(scale),
             transforms.Resize(scale),
@@ -64,8 +64,8 @@ def create_DataLoader(self, source, batch_size1, scale=32):
         data_loader_s = torch.utils.data.DataLoader(
             dataset_source,
             batch_size=batch_size1,
-            shuffle=True,
-            num_workers=4)
+            shuffle=shuffle,
+            num_workers=workers)
 
         return data_loader_s
 
