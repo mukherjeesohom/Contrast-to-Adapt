@@ -2,9 +2,9 @@ import sys
 
 sys.path.append('../loader')
 # from unaligned_data_loader import UnalignedDataLoader
-from svhn import load_svhn
-from mnist import load_mnist
-from usps import load_usps
+from datasets.svhn import load_svhn
+from datasets.mnist import load_mnist
+from datasets.usps import load_usps
 # from gtsrb import load_gtsrb
 # from synth_traffic import load_syntraffic
 
@@ -55,11 +55,12 @@ def dataset_read(source, batch_size, scale=False, all_use='no'):
     # T['labels'] = t_label_train
 
     # input target samples for both 
-    S_test['imgs'] = test_target
-    S_test['labels'] = t_label_test
+    S_test['imgs'] = test_source
+    S_test['labels'] = s_label_test
     # T_test['imgs'] = test_target
     # T_test['labels'] = t_label_test
-    scale = 40 if source == 'synth' else 28 if source == 'usps' or target == 'usps' else 32
+    # scale = 40 if source == 'synth' else 28 if source == 'usps' or target == 'usps' else 32
+    scale = 40 if source == 'synth' else 28 if source == 'usps' else 32
     # train_loader = UnalignedDataLoader()
 
     train_loader = create_DataLoader(S, batch_size, scale=scale)

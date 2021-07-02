@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from grad_reverse import grad_reverse
+# from grad_reverse import grad_reverse
 
 
 class Feature(nn.Module):
@@ -35,8 +35,8 @@ class Predictor(nn.Module):
     def set_lambda(self, lambd):
         self.lambd = lambd
     def forward(self, x, reverse=False):
-        if reverse:
-            x = grad_reverse(x, self.lambd)
+        # if reverse:
+        #     x = grad_reverse(x, self.lambd)
         x = F.dropout(x, training=self.training, p=self.prob)
         x = F.relu(self.bn1_fc(self.fc1(x)))
         x = F.dropout(x, training=self.training, p=self.prob)

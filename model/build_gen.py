@@ -1,24 +1,24 @@
-import svhn2mnist
-import usps
-import syn2gtrsb
-import syndig2svhn
+import model.svhn2mnist
+import model.usps
+# import model.syn2gtrsb
+# import model.syndig2svhn
 
 import torch.nn as nn
 
 def Generator(source, target, pixelda=False):
     if source == 'usps' or target == 'usps':
-        return usps.Feature()
+        return model.usps.Feature()
     elif source == 'svhn':
-        return svhn2mnist.Feature()
+        return model.svhn2mnist.Feature()
     # elif source == 'synth':
     #     return syn2gtrsb.Feature()
 
 
 def Classifier(source, target):
     if source == 'usps' or target == 'usps':
-        return usps.Predictor()
+        return model.usps.Predictor()
     if source == 'svhn':
-        return svhn2mnist.Predictor()
+        return model.svhn2mnist.Predictor()
     # if source == 'synth':
     #     return syn2gtrsb.Predictor()
 
