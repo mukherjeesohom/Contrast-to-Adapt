@@ -29,6 +29,8 @@ class CustLeNet(nn.Module):
 
     def __init__(self, source, target):
         super().__init__()
+        print(f'source={source} \t target={target}')
+
         self.feature = Generator(source, target)
         self.clf = Classifier(source, target)
 
