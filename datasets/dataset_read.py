@@ -67,6 +67,6 @@ def dataset_read(source, batch_size, scale=False, all_use='no'):
     # dataset = train_loader.load_data()
     # test_loader = UnalignedDataLoader()
     
-    test_loader = create_DataLoader(S_test, batch_size, scale=scale)
+    val_loader = create_DataLoader(S_test, batch_size, scale=scale)
     # dataset_test = test_loader.load_data()
-    return train_loader, test_loader
+    return train_loader, val_loader
