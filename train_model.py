@@ -24,6 +24,8 @@ def train_val_loop(model, epochs:int, train_loader, val_loader, optimizer, crite
         device: device to which tensors will be allocated (in our case, from gpu 0 to 7)
         scheduler: update the learning rate based on chosen scheme if provided
     """
+    print("Training Started !!")
+
     # store the losses after every epoch 
     loss_train = []
     loss_val = []
@@ -106,7 +108,7 @@ if __name__ == '__main__':
                         # help='hyper paremeter for generator update')
     # parser.add_argument('--one_step', action='store_true', default=False,
                         # help='one step training with gradient reversal layer')
-    parser.add_argument('--optimizer', type=str, default='adam', metavar='N', help='which optimizer')
+    # parser.add_argument('--optimizer', type=str, default='adam', metavar='N', help='which optimizer')
     # parser.add_argument('--resume_epoch', type=int, default=100, metavar='N',
                         # help='epoch to resume')
     parser.add_argument('--save_epoch', type=int, default=10, metavar='N',
@@ -131,7 +133,8 @@ if __name__ == '__main__':
     print(args)
 
     batch_size = args.batch_size
-    source = args.source
+    # source = args.source
+    source = 'mnist'
     target = args.target
     # num_k = args.num_k
     checkpoint_dir = args.checkpoint_dir
@@ -152,22 +155,20 @@ if __name__ == '__main__':
         os.mkdir(args.checkpoint_dir)
 
     print('dataset loading')
-    train_loader, val_loader = dataset_read(source, batch_size, scale, all_use)
+    train_loader, val_loader = dataset_read(source, target, batch_size, scale, all_use)
     print('load finished!')
 
     device = torch.device("cuda")
 
     model = CustLeNet(source, target)
 
-    optimizer = optim.Adam(model.parameters(),
-                            lr = args.lr,
-                            weight_decay=0.0001)
+    optimizer = optim.Adam(model.parameters(), lr = args.lr, weight_decay=0.0001)
 
     criterion = nn.CrossEntropyLoss()
 
     torch.cuda.manual_seed(1) # fixing seed according to MCD work
 
-    loss_train, loss_val = train_val_loop(model, args.max_epoch, train_loader, val_loader,
+    loss_train, loss_val = train_val_loop(model.cuda(), args.max_epoch, train_loader, val_loader,
                     optimizer, criterion, batch_size, device,
                     checkpoint_dir, save_epoch, print_interval)
 

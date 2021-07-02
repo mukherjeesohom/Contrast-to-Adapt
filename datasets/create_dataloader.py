@@ -50,7 +50,7 @@ from datasets.datasets import Dataset
 #                     'T': B, 'T_label': B_paths}
 
 
-def create_DataLoader(self, source, batch_size1, scale=32, shuffle=False, workers=4):
+def create_DataLoader(source, batch_size1, scale=32, shuffle=False, workers=4):
         transform = transforms.Compose([
             # transforms.Scale(scale),
             transforms.Resize(scale),

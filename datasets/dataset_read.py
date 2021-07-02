@@ -32,7 +32,7 @@ def return_dataset(data, scale=False, usps=False, all_use='no'):
     return train_image, train_label, test_image, test_label
 
 # we don't need target just source
-def dataset_read(source, batch_size, scale=False, all_use='no'):
+def dataset_read(source, target, batch_size, scale=False, all_use='no'):
     # Return train and test loader
 
     S = {}
@@ -59,11 +59,11 @@ def dataset_read(source, batch_size, scale=False, all_use='no'):
     S_test['labels'] = s_label_test
     # T_test['imgs'] = test_target
     # T_test['labels'] = t_label_test
-    # scale = 40 if source == 'synth' else 28 if source == 'usps' or target == 'usps' else 32
-    scale = 40 if source == 'synth' else 28 if source == 'usps' else 32
+    scale = 40 if source == 'synth' else 28 if source == 'usps' or target == 'usps' else 32
+    # scale = 40 if source == 'synth' else 28 if source == 'usps' else 32
     # train_loader = UnalignedDataLoader()
 
-    train_loader = create_DataLoader(S, batch_size, scale=scale, shuffle=True)
+    train_loader = create_DataLoader(S, batch_size, scale=scale, shuffle=True, )
     # dataset = train_loader.load_data()
     # test_loader = UnalignedDataLoader()
     
