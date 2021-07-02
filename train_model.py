@@ -3,6 +3,7 @@ import torch.optim as optim
 import torch.nn as nn
 import argparse
 import os
+import matplotlib.pyplot as plt
 
 from datasets.dataset_read import dataset_read
 from model.build_gen import CustLeNet
@@ -173,3 +174,12 @@ if __name__ == '__main__':
                     checkpoint_dir, save_epoch, print_interval, source+target)
 
     # create and save the plot
+    x = range(1, args.max_epoch+1)
+    plt.title("Plot showing training and validation loss against number of epochs")
+    plt.xlabel("Number of epochs")
+    plt.ylabel("Loss")
+    plt.plot(x, loss_train, color='b', label='Training loss')
+    plt.plot(x, loss_val, color='r', label='Validation loss')
+    plt.legend()
+    plt.savefig(f'checkpoint/{source+target}_loss_curve.png', bbox_inches='tight')
+    plt.show()
