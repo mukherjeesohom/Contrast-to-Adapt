@@ -13,7 +13,7 @@ model_names = sorted(name for name in models.__dict__
 parser = argparse.ArgumentParser(description='PyTorch SimCLR')
 parser.add_argument('-data', metavar='DIR', default='./datasets',
                     help='path to dataset')
-parser.add_argument('-dataset_name', default='stl10',
+parser.add_argument('-dataset_name', default='usps',
                     help='dataset_name', choices=['stl10', 'cifar10', 'mnist', 'usps', 'svhn'])
 parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                     choices=model_names,
@@ -22,7 +22,7 @@ parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                          ' (default: resnet50)')
 parser.add_argument('-j', '--workers', default=12, type=int, metavar='N',
                     help='number of data loading workers (default: 32)')
-parser.add_argument('--epochs', default=200, type=int, metavar='N',
+parser.add_argument('--epochs', default=20, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('-b', '--batch-size', default=256, type=int,
                     metavar='N',
@@ -43,7 +43,7 @@ parser.add_argument('--fp16-precision', action='store_true',
 
 parser.add_argument('--out_dim', default=128, type=int,
                     help='feature dimension (default: 128)')
-parser.add_argument('--log-every-n-steps', default=100, type=int,
+parser.add_argument('--log-every-n-steps', default=5, type=int,
                     help='Log every n steps')
 parser.add_argument('--temperature', default=0.07, type=float,
                     help='softmax temperature (default: 0.07)')
