@@ -8,9 +8,21 @@ import matplotlib.pyplot as plt
 from datasets.dataset_read import dataset_read
 from model.build_gen import CustLeNet
 
+from torchvision.utils import save_image
+from datetime import datetime
+
 # loader = torch.utils.data.DataLoader(data, batch_size=500)
 
-def get_accuracy(model, dataloader):
+def save_images(imgs, pred, save_dir):
+    for i in range(len(imgs)):
+        img = imgs[i]
+        l = str(pred[i].cpu()[0].numpy())
+        now = datetime.now()
+        n = now.strftime("%H_%M_%S")
+        save_image(img, save_dir+'/' + l+'/'+n+'.png') # may be scaling is a problem
+
+
+def get_accuracy(model, dataloader, save_image=False, save_dir=None):
 
     correct, total = 0, 0
     for xs, ts in dataloader:
@@ -18,6 +30,10 @@ def get_accuracy(model, dataloader):
         ts = ts.cuda()
         zs = model(xs.cuda())
         pred = zs.max(1, keepdim=True)[1] # get the index of the max logit
+        
+        if save_image:
+            save_images(xs, pred, save_dir)
+        
         correct += pred.eq(ts.view_as(pred)).sum().item()
         total += int(ts.shape[0])
 
@@ -49,15 +65,17 @@ if __name__ == '__main__':
     # parser.add_argument('--optimizer', type=str, default='adam', metavar='N', help='which optimizer')
     # parser.add_argument('--resume_epoch', type=int, default=100, metavar='N',
                         # help='epoch to resume')
-    parser.add_argument('--save_epoch', type=int, default=10, metavar='N',
-                        help='when to restore the model')
-    parser.add_argument('--save_model', action='store_true', default=False,
-                        help='save_model or not')
+    # parser.add_argument('--save_epoch', type=int, default=10, metavar='N',
+    #                     help='when to restore the model')
+    # parser.add_argument('--save_model', action='store_true', default=False,
+    #                     help='save_model or not')
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
     parser.add_argument('--source', type=str, default='svhn', metavar='N',
                         help='source dataset')
     parser.add_argument('--target', type=str, default='mnist', metavar='N', help='target dataset')
+    parser.add_argument('--save_infer', action='store_true', default=False,
+                        help='save dataset or not after inference with new labels')
     # parser.add_argument('--use_abs_diff', action='store_true', default=False,
                         # help='use absolute difference value as a measurement')
  
@@ -76,12 +94,12 @@ if __name__ == '__main__':
     target = args.target
     # num_k = args.num_k
     checkpoint_dir = args.checkpoint_dir
-    save_epoch = args.save_epoch
+    # save_epoch = args.save_epoch
     # use_abs_diff = args.use_abs_diff
     all_use = args.all_use
     print_interval = 100
 
-    if source == 'svhn':
+    if target == 'svhn':
         scale = True
     else:
         scale = False
@@ -96,19 +114,29 @@ if __name__ == '__main__':
     train_loader, val_loader = dataset_read(target, source, batch_size, scale, all_use) # changed the loaded data to target
     print('load finished!')
 
+
+# create directory to save dataset after inference
+    if args.save_infer:
+        print("Creating new labeled data directory!!")
+        if not os.path.exists(source+target):
+            os.mkdir(source+target)
+
+            for i in range(10):
+                os.mkdir(source+target + '/' + str(i))
+
     device = torch.device("cuda")
 
     model = CustLeNet(source, target).cuda()
 
-    optimizer = optim.Adam(model.parameters(), lr = args.lr, weight_decay=0.0001)
+    # optimizer = optim.Adam(model.parameters(), lr = args.lr, weight_decay=0.0001)
 
-    criterion = nn.CrossEntropyLoss().cuda()
+    # criterion = nn.CrossEntropyLoss().cuda()
 
     torch.cuda.manual_seed(1) # fixing seed according to MCD work
 
     #
     model.load_state_dict(torch.load(f'{args.checkpoint_dir}/{source+target}_epoch_{args.load_epoch}.pth'))
 
-    accuracy = get_accuracy(model.cuda(), train_loader)
+    accuracy = get_accuracy(model.cuda(), train_loader, args.save_infer, source+target)
 
     print(f"Accuracy (on {target})= {accuracy}")
