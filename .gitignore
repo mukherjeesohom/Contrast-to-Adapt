@@ -3,3 +3,5 @@ SimCLR/datasets/*
 *.mat
 *.pkl
 *.pth
+*.png
+*.jpg

@@ -18,7 +18,7 @@ def save_images(imgs, pred, save_dir):
         img = imgs[i]
         l = str(pred[i].cpu()[0].numpy())
         now = datetime.now()
-        n = now.strftime("%H_%M_%S")
+        n = now.strftime("%H_%M_%S_%f")
         save_image(img, save_dir+'/' + l+'/'+n+'.png') # may be scaling is a problem
 
 
