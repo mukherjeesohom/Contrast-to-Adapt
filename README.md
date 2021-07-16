@@ -44,3 +44,10 @@ Change ```dataset_name``` flag as ```mnist```, ```svhn```, or ```usps``` for dif
 
 
 ## 3. C2D
+
+1. Save dataset under ```data/cifar-10```
+2. Save SimCLR model under ```pretrained``` folder
+3. Training:
+```
+python3 main_cifar.py --batch_size 32 --r 0.8 --lambda_u 500 --dataset cifar10 --p_threshold 0.03 --data_path ./data/cifar-10 --experiment-name simclr_resnet18 --method selfsup --net resnet18
+```
