@@ -11,7 +11,8 @@ def load_usps(all_use=False):
     label_train = data_set[0][1]
     img_test = data_set[1][0]
     label_test = data_set[1][1]
-    inds = np.random.permutation(img_train.shape[0])
+    #inds = np.random.permutation(img_train.shape[0])
+    inds = np.arange(0, img_train.shape[0])
     if all_use == 'yes':
         img_train = img_train[inds][:6562]
         label_train = label_train[inds][:6562]

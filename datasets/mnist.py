@@ -23,9 +23,9 @@ def load_mnist(scale=True, usps=False, all_use=False):
         mnist_train = mnist_train.transpose((0, 3, 1, 2))
         mnist_test = mnist_test.transpose((0, 3, 1, 2))
     train_label = np.argmax(mnist_labels_train, axis=1)
-    inds = np.random.permutation(mnist_train.shape[0])
-    mnist_train = mnist_train[inds]
-    train_label = train_label[inds]
+    #inds = np.random.permutation(mnist_train.shape[0])
+    #mnist_train = mnist_train[inds]
+    #train_label = train_label[inds]
     test_label = np.argmax(mnist_labels_test, axis=1)
     if usps and all_use != 'yes':
         mnist_train = mnist_train[:2000]
