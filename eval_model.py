@@ -11,7 +11,11 @@ from model.build_gen import CustLeNet
 from torchvision.utils import save_image
 from datetime import datetime
 
+import json
+
 # loader = torch.utils.data.DataLoader(data, batch_size=500)
+
+noisy_labels = [] # global list
 
 def save_images(imgs, pred, save_dir):
     for i in range(len(imgs)):
@@ -21,8 +25,15 @@ def save_images(imgs, pred, save_dir):
         n = now.strftime("%H_%M_%S_%f")
         save_image(img, save_dir+'/' + l+'/'+n+'.png') # may be scaling is a problem
 
+def add_to_json(pred):
+    # save noisy labels in .json file
+    for i in range(len(pred)):
+        l = int(pred[i].cpu()[0].numpy())
+        global noisy_labels
+        noisy_labels.append(l)
 
-def get_accuracy(model, dataloader, save_image=False, save_dir=None):
+
+def get_accuracy(model, dataloader, save_image=False, save_json=False, save_dir=None):
 
     correct, total = 0, 0
     for xs, ts in dataloader:
@@ -33,9 +44,19 @@ def get_accuracy(model, dataloader, save_image=False, save_dir=None):
         
         if save_image:
             save_images(xs, pred, save_dir)
+
+        if save_json: # adding to the list
+            add_to_json(pred)
         
         correct += pred.eq(ts.view_as(pred)).sum().item()
         total += int(ts.shape[0])
+
+    # dumping to json file
+    global noisy_labels
+    jsonlabels = json.dumps(noisy_labels)
+    jsonFile = open(save_dir+'.json', "w")
+    jsonFile.write(jsonlabels)
+    jsonFile.close()
 
     return correct / total
 
@@ -74,8 +95,10 @@ if __name__ == '__main__':
     parser.add_argument('--source', type=str, default='svhn', metavar='N',
                         help='source dataset')
     parser.add_argument('--target', type=str, default='mnist', metavar='N', help='target dataset')
-    parser.add_argument('--save_infer', action='store_true', default=False,
-                        help='save dataset or not after inference with new labels')
+    parser.add_argument('--save_img', action='store_true', default=False,
+                        help='save dataset after inference with new labels')
+    parser.add_argument('--save_json', action='store_true', default=False,
+                        help='save labels after inference in json file')
     # parser.add_argument('--use_abs_diff', action='store_true', default=False,
                         # help='use absolute difference value as a measurement')
  
@@ -116,7 +139,7 @@ if __name__ == '__main__':
 
 
 # create directory to save dataset after inference
-    if args.save_infer:
+    if args.save_img:
         print("Creating new labeled data directory!!")
         if not os.path.exists(source+target):
             os.mkdir(source+target)
@@ -137,6 +160,6 @@ if __name__ == '__main__':
     #
     model.load_state_dict(torch.load(f'{args.checkpoint_dir}/{source+target}_epoch_{args.load_epoch}.pth'))
 
-    accuracy = get_accuracy(model.cuda(), train_loader, args.save_infer, source+target)
+    accuracy = get_accuracy(model.cuda(), train_loader, args.save_img, args.save_json, source+target)
 
     print(f"Accuracy (on {target})= {accuracy}")
