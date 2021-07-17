@@ -56,15 +56,18 @@ class cifar_dataset(Dataset):
                 self.test_label = test_dic['labels']
 
             elif dataset == 'mnist':
+                # Loading train data and labels here as well since we want to evaluate on train set.
 
                 mnist_data = loadmat('./datasets/mnist_data.mat')
-                mnist_test = np.reshape(mnist_data['test_32'], (10000, 32, 32, 1))
+                mnist_test = np.reshape(mnist_data['train_32'], (55000, 32, 32, 1))
                 mnist_test = np.concatenate([mnist_test, mnist_test, mnist_test], 3)
                 test_data = mnist_test.transpose(0, 1, 2, 3).astype(np.float32)
 
-                mnist_labels_test = mnist_data['label_test']
-                test_label = list(np.argmax(mnist_labels_test, axis=1))
-                test_label = test_label
+                mnist_labels_test = mnist_data['label_train']
+
+                self.test_label = list(np.argmax(mnist_labels_test, axis=1))
+                self.test_data = (test_data*255).astype(np.uint8)
+
 
         else:
             train_data = []
@@ -88,23 +91,17 @@ class cifar_dataset(Dataset):
             elif dataset == 'mnist':
 
                 mnist_data = loadmat('./datasets/mnist_data.mat')
-
                 mnist_train = np.reshape(mnist_data['train_32'], (55000, 32, 32, 1))
                 mnist_train = np.concatenate([mnist_train, mnist_train, mnist_train], 3)
-                mnist_train = mnist_train.transpose(0, 1, 2, 3).astype(np.float32)
+                train_data = mnist_train.transpose(0, 1, 2, 3).astype(np.float32)
+
                 mnist_labels_train = mnist_data['label_train']
+                train_label = list(np.argmax(mnist_labels_train, axis=1))
 
-                train_label = np.argmax(mnist_labels_train, axis=1)
-                inds = np.random.permutation(mnist_train.shape[0])
-
-                train_data = mnist_train[inds]
-                train_label = list(train_label[inds])
-
-                print(f'mnist org_data shape: {train_data.shape}')
+                #print(f'mnist org_data shape: {train_data.shape}')
                 train_data = (train_data*255).astype(np.uint8)
 
-
-                print(f'mnist final data shape: {train_data.shape}')
+                #print(f'mnist final data shape: {train_data.shape}')
 
             # Loading noisy labels [size of the list = training set]
 
@@ -174,18 +171,17 @@ class cifar_dataset(Dataset):
             img2 = self.transform(img)
             return img1, img2, target, index, clean
         elif self.mode == 'test':
-            img, target = self.train_data[index], self.train_label[index] # added train set to evaluate on train
+            img, target = self.test_data[index], self.test_label[index]
             img = Image.fromarray(img)
             img = self.transform(img)
             return img, target
 
     def __len__(self):
-        return len(self.train_data)
 
-        # if self.mode != 'test':
-        #     return len(self.train_data)
-        # else:
-        #     return len(self.test_data)
+        if self.mode != 'test':
+            return len(self.train_data)
+        else:
+            return len(self.test_data)
 
 
 class cifar_dataloader():
@@ -225,14 +221,12 @@ class cifar_dataloader():
         elif self.dataset == 'mnist':
             self.transform_train = transforms.Compose([
                 transforms.RandomCrop(32, padding=4),
-                transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
                 transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
             ])
             self.transform_warmup = transforms.Compose([
                 transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.4),
                 transforms.RandomCrop(32, padding=4),
-                transforms.RandomHorizontalFlip(),
                 transforms.RandomAffine(degrees=15.,
                                         translate=(0.1, 0.1),
                                         scale=(2. / 3, 3. / 2),
