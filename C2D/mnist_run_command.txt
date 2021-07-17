@@ -1,0 +1,1 @@
+python3 main_cifar.py --num_epochs 1 --batch_size 4  --r 0.8 --lambda_u 500 --dataset mnist --p_threshold 0.03 --data_path ./cifar-10 --experiment-name simclr_resnet18 --method selfsup --net resnet50

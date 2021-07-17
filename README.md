@@ -31,3 +31,24 @@ Command for inference (noisy label generation):
 ```
 python eval_model.py --source usps --target mnist --load_epoch 190 --save_infer
 ```
+
+## 2. SimCLR on Target data
+
+Training:
+```
+conda activate simclr
+python run.py -data ./datasets -dataset_name svhn --log-every-n-steps 2 --epochs 10
+```
+
+Change ```dataset_name``` flag as ```mnist```, ```svhn```, or ```usps``` for different datasets. 
+
+
+## 3. C2D
+
+<!-- 1. Save dataset under ```data/cifar-10``` -->
+1. Place noisy label `.json` file in `noisy_labels` directory.
+2. Save SimCLR model under ```pretrained``` folder
+3. Training:
+```
+python3 main_cifar.py --num_epochs 1 --batch_size 4  --r 0.8 --lambda_u 500 --dataset mnist --p_threshold 0.03 --data_path ./noisy_labels --experiment-name simclr_resnet18 --method selfsup --net resnet50
+```

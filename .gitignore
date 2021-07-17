@@ -1,5 +1,6 @@
 SimCLR/runs/*
 SimCLR/datasets/*
+C2D/data/cifar-10/*
 *.mat
 *.pkl
 *.pth
