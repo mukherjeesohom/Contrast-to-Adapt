@@ -174,21 +174,18 @@ class cifar_dataset(Dataset):
             img2 = self.transform(img)
             return img1, img2, target, index, clean
         elif self.mode == 'test':
-            img, target = self.test_data[index], self.test_label[index]
-            img = Image.fromarray(img)
-            img = self.transform(img)
-            return img, target
-        elif self.mode == 'perf_on_train':
-            img, target = self.train_data[index], self.train_label[index]
+            img, target = self.train_data[index], self.train_label[index] # added train set to evaluate on train
             img = Image.fromarray(img)
             img = self.transform(img)
             return img, target
 
     def __len__(self):
-        if self.mode != 'test':
-            return len(self.train_data)
-        else:
-            return len(self.test_data)
+        return len(self.train_data)
+
+        # if self.mode != 'test':
+        #     return len(self.train_data)
+        # else:
+        #     return len(self.test_data)
 
 
 class cifar_dataloader():
@@ -289,7 +286,7 @@ class cifar_dataloader():
 
         elif mode == 'test':
             test_dataset = cifar_dataset(dataset=self.dataset, noise_mode=self.noise_mode, r=self.r,
-                                         root_dir=self.root_dir, transform=self.transform_test, mode='perf_on_train')
+                                         root_dir=self.root_dir, transform=self.transform_test, mode='test')
             test_loader = DataLoader(
                 dataset=test_dataset,
                 batch_size=self.batch_size,
