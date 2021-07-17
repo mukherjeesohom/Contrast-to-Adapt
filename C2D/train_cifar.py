@@ -76,7 +76,7 @@ def run_test(epoch, net1, net2, test_loader, device, test_log):
             total += targets.size(0)
             correct += predicted.eq(targets).cpu().sum().item()
     acc = 100. * correct / total
-    print("\n| Test Epoch #%d\t Accuracy: %.2f%%\n" % (epoch, acc))
+    print("\n| Test Epoch #%d\t Test Accuracy [On our Train set]: %.2f%%\n" % (epoch, acc))
     test_log.write('Epoch:%d   Accuracy:%.2f\n' % (epoch, acc))
     test_log.flush()
 

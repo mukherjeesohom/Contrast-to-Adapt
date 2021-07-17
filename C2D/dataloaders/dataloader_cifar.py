@@ -179,7 +179,7 @@ class cifar_dataset(Dataset):
             img = self.transform(img)
             return img, target
         elif self.mode == 'perf_on_train':
-            img, target = self.test_data[index], self.test_label[index]
+            img, target = self.train_data[index], self.train_label[index]
             img = Image.fromarray(img)
             img = self.transform(img)
             return img, target
