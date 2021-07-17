@@ -45,7 +45,8 @@ Change ```dataset_name``` flag as ```mnist```, ```svhn```, or ```usps``` for dif
 
 ## 3. C2D
 
-1. Save dataset under ```data/cifar-10```
+<!-- 1. Save dataset under ```data/cifar-10``` -->
+1. Place noisy label `.json` file in `noisy_labels` directory.
 2. Save SimCLR model under ```pretrained``` folder
 3. Training:
 ```
