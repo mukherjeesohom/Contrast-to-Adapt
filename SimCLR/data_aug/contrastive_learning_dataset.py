@@ -3,6 +3,7 @@ from data_aug.gaussian_blur import GaussianBlur
 from torchvision import transforms, datasets
 from data_aug.view_generator import ContrastiveLearningViewGenerator
 from exceptions.exceptions import InvalidDatasetSelection
+import torch
 
 
 class ContrastiveLearningDataset:
@@ -17,6 +18,8 @@ class ContrastiveLearningDataset:
                                               transforms.RandomHorizontalFlip(),
                                               transforms.RandomApply([color_jitter], p=0.8),
                                               transforms.RandomGrayscale(p=0.2),
+                                            #   transforms.Lambda(lambda img: torch.stack([img for i in range(3)]) if size(img)[0]==1 else img),
+                                              transforms.Lambda(lambda img: img.convert('RGB')),
                                               GaussianBlur(kernel_size=int(0.1 * size)),
                                               transforms.ToTensor()])
         return data_transforms

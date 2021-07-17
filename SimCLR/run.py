@@ -19,7 +19,7 @@ parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                     choices=model_names,
                     help='model architecture: ' +
                          ' | '.join(model_names) +
-                         ' (default: resnet50)')
+                         ' (default: resnet18)')
 parser.add_argument('-j', '--workers', default=12, type=int, metavar='N',
                     help='number of data loading workers (default: 32)')
 parser.add_argument('--epochs', default=200, type=int, metavar='N',
