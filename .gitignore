@@ -5,3 +5,4 @@ SimCLR/datasets/*
 *.pth
 *.png
 *.jpg
+*.zip
