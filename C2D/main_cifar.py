@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from __future__ import print_function
 
 import argparse
@@ -23,19 +24,19 @@ def parse_args():
     parser.add_argument('--noise_mode', default='sym')
     parser.add_argument('--alpha', default=4., type=float, help='parameter for Beta')
     parser.add_argument('--alpha-loss', default=0.5, type=float, help='parameter for Beta in loss')
-    parser.add_argument('--lambda_u', default=25, type=float, help='weight for unsupervised loss')
-    parser.add_argument('--p_threshold', default=0.5, type=float, help='clean probability threshold')
+    parser.add_argument('--lambda_u', default=500, type=float, help='weight for unsupervised loss')
+    parser.add_argument('--p_threshold', default=0.03, type=float, help='clean probability threshold')
     parser.add_argument('--T', default=0.5, type=float, help='sharpening temperature')
-    parser.add_argument('--num_epochs', default=360, type=int)
-    parser.add_argument('--r', default=0.5, type=float, help='noise ratio')
+    parser.add_argument('--num_epochs', default=1, type=int)
+    parser.add_argument('--r', default=0.8, type=float, help='noise ratio')
     parser.add_argument('--id', default='')
     parser.add_argument('--seed', default=123)
     parser.add_argument('--gpuid', default=0, type=int)
-    parser.add_argument('--data_path', default='./cifar-10', type=str, help='path to dataset')
-    parser.add_argument('--net', default='resnet18', type=str, help='net')
-    parser.add_argument('--method', default='reg', type=str, help='method')
-    parser.add_argument('--dataset', default='cifar10', type=str)
-    parser.add_argument('--experiment-name', required=True, type=str)
+    parser.add_argument('--data_path', default='./noisy_labels', type=str, help='path to dataset')
+    parser.add_argument('--net', default='resnet50', type=str, help='net')
+    parser.add_argument('--method', default='selfsup', type=str, help='method')
+    parser.add_argument('--dataset', default='mnist', type=str)
+    parser.add_argument('--experiment-name', default = 'simclr_resnet18', required=True, type=str)
     parser.add_argument('--aug', dest='aug', action='store_true', help='use stronger aug')
     parser.add_argument('--use-std', dest='use_std', action='store_true', help='use stronger aug')
     parser.add_argument('--drop', dest='drop', action='store_true', help='use drop')
