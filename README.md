@@ -49,5 +49,5 @@ Change ```dataset_name``` flag as ```mnist```, ```svhn```, or ```usps``` for dif
 2. Save SimCLR model under ```pretrained``` folder
 3. Training:
 ```
-python3 main_cifar.py --batch_size 32 --r 0.8 --lambda_u 500 --dataset cifar10 --p_threshold 0.03 --data_path ./data/cifar-10 --experiment-name simclr_resnet18 --method selfsup --net resnet18
+python3 main_cifar.py --num_epochs 1 --batch_size 4  --r 0.8 --lambda_u 500 --dataset mnist --p_threshold 0.03 --data_path ./noisy_labels --experiment-name simclr_resnet18 --method selfsup --net resnet50
 ```
