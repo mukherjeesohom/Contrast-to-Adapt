@@ -60,7 +60,7 @@ class cifar_dataset(Dataset):
                 mnist_data = loadmat('./datasets/mnist_data.mat')
                 mnist_test = np.reshape(mnist_data['test_32'], (10000, 32, 32, 1))
                 mnist_test = np.concatenate([mnist_test, mnist_test, mnist_test], 3)
-                test_data = mnist_test.transpose(0, 3, 1, 2).astype(np.float32)
+                test_data = mnist_test.transpose(0, 1, 2, 3).astype(np.float32)
 
                 mnist_labels_test = mnist_data['label_test']
                 test_label = list(np.argmax(mnist_labels_test, axis=1))
@@ -78,8 +78,12 @@ class cifar_dataset(Dataset):
 
                 train_data = np.concatenate(train_data)
 
+                print(f'cifar-10 org_data shape: {train_data.shape}')
+
                 train_data = train_data.reshape((50000, 3, 32, 32))
                 train_data = train_data.transpose((0, 2, 3, 1))
+
+                print(f'cifar-10 final data: shape {train_data.shape}')
 
             elif dataset == 'mnist':
 
@@ -87,7 +91,7 @@ class cifar_dataset(Dataset):
 
                 mnist_train = np.reshape(mnist_data['train_32'], (55000, 32, 32, 1))
                 mnist_train = np.concatenate([mnist_train, mnist_train, mnist_train], 3)
-                mnist_train = mnist_train.transpose(0, 3, 1, 2).astype(np.float32)
+                mnist_train = mnist_train.transpose(0, 1, 2, 3).astype(np.float32)
                 mnist_labels_train = mnist_data['label_train']
 
                 train_label = np.argmax(mnist_labels_train, axis=1)
@@ -95,6 +99,12 @@ class cifar_dataset(Dataset):
 
                 train_data = mnist_train[inds]
                 train_label = list(train_label[inds])
+
+                print(f'mnist org_data shape: {train_data.shape}')
+                train_data = (train_data*255).astype(np.uint8)
+
+
+                print(f'mnist final data shape: {train_data.shape}')
 
             # Loading noisy labels [size of the list = training set]
 
@@ -164,6 +174,11 @@ class cifar_dataset(Dataset):
             img2 = self.transform(img)
             return img1, img2, target, index, clean
         elif self.mode == 'test':
+            img, target = self.test_data[index], self.test_label[index]
+            img = Image.fromarray(img)
+            img = self.transform(img)
+            return img, target
+        elif self.mode == 'perf_on_train':
             img, target = self.test_data[index], self.test_label[index]
             img = Image.fromarray(img)
             img = self.transform(img)
@@ -270,9 +285,11 @@ class cifar_dataloader():
                 num_workers=self.num_workers)
             return labeled_trainloader, unlabeled_trainloader
 
+        # Putting newly created mode i.e. perf_on_train since we want to see the performance on the train set.
+
         elif mode == 'test':
             test_dataset = cifar_dataset(dataset=self.dataset, noise_mode=self.noise_mode, r=self.r,
-                                         root_dir=self.root_dir, transform=self.transform_test, mode='test')
+                                         root_dir=self.root_dir, transform=self.transform_test, mode='perf_on_train')
             test_loader = DataLoader(
                 dataset=test_dataset,
                 batch_size=self.batch_size,
