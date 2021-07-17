@@ -23,13 +23,13 @@ Pairs of dataset to be used:
 
 Training:
 ```
-python train_model.py --source usps --target mnist
+python train_model.py --source usps --target mnist --all_use yes 
 ```
 
 
 Command for inference (noisy label generation):
 ```
-python eval_model.py --source usps --target mnist --load_epoch 190 --save_infer
+python eval_model.py --source usps --target mnist --load_epoch 190 --save_infer --all_use yes
 ```
 
 ## 2. SimCLR on Target data
