@@ -68,7 +68,7 @@ class cifar_dataset(Dataset):
                 self.test_label = list(np.argmax(mnist_labels_test, axis=1))
                 self.test_data = (test_data*255).astype(np.uint8)
 
-            elif dataset = 'usps':
+            elif dataset == 'usps':
                 f = gzip.open('datasets/usps_28x28.pkl', 'rb')
                 data_set = pickle.load(f, encoding='ISO-8859-1')
                 f.close()
