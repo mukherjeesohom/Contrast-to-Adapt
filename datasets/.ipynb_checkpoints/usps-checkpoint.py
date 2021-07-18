@@ -4,7 +4,7 @@ import pickle
 
 
 def load_usps(all_use=False):
-    f = gzip.open('datasets/usps_28x28.pkl', 'rb')
+    f = gzip.open('data/usps_28x28.pkl', 'rb')
     data_set = pickle.load(f, encoding='ISO-8859-1')
     f.close()
     img_train = data_set[0][0]
