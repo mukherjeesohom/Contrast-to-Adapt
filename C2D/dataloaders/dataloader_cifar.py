@@ -8,7 +8,7 @@ import torchvision.transforms as transforms
 from PIL import Image
 from sklearn.metrics import roc_auc_score
 from torch.utils.data import Dataset, DataLoader
-
+import gzip
 
 def unpickle(file):
     import _pickle as cPickle
@@ -68,6 +68,20 @@ class cifar_dataset(Dataset):
                 self.test_label = list(np.argmax(mnist_labels_test, axis=1))
                 self.test_data = (test_data*255).astype(np.uint8)
 
+            elif dataset = 'usps':
+                f = gzip.open('datasets/usps_28x28.pkl', 'rb')
+                data_set = pickle.load(f, encoding='ISO-8859-1')
+                f.close()
+                img_train = data_set[0][0]
+                label_train = data_set[0][1]
+                inds = np.arange(0, img_train.shape[0])
+                img_train = img_train[inds][:6562]
+
+                self.test_label = label_train[inds][:6562]
+                img_train = img_train * 255
+                test_data = img_train.reshape((img_train.shape[0], 1, 28, 28))
+                self.test_data = test_data.transpose(0, 2, 3, 1).astype(np.float32)
+
 
         else:
             train_data = []
@@ -102,6 +116,21 @@ class cifar_dataset(Dataset):
                 train_data = (train_data*255).astype(np.uint8)
 
                 #print(f'mnist final data shape: {train_data.shape}')
+
+            elif dataset == 'usps':
+                f = gzip.open('datasets/usps_28x28.pkl', 'rb')
+                data_set = pickle.load(f, encoding='ISO-8859-1')
+                f.close()
+                img_train = data_set[0][0]
+                label_train = data_set[0][1]
+                inds = np.arange(0, img_train.shape[0])
+                img_train = img_train[inds][:6562]
+
+                train_label = label_train[inds][:6562]
+                img_train = img_train * 255
+                train_data = img_train.reshape((img_train.shape[0], 1, 28, 28))
+                train_data = train_data.transpose(0, 2, 3, 1).astype(np.float32)
+
 
             # Loading noisy labels [size of the list = training set]
 
@@ -219,6 +248,27 @@ class cifar_dataloader():
             ])
 
         elif self.dataset == 'mnist':
+            self.transform_train = transforms.Compose([
+                transforms.RandomCrop(32, padding=4),
+                transforms.ToTensor(),
+                transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+            ])
+            self.transform_warmup = transforms.Compose([
+                transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.4),
+                transforms.RandomCrop(32, padding=4),
+                transforms.RandomAffine(degrees=15.,
+                                        translate=(0.1, 0.1),
+                                        scale=(2. / 3, 3. / 2),
+                                        shear=(-0.1, 0.1, -0.1, 0.1)),
+                transforms.ToTensor(),
+                transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+            ])
+            self.transform_test = transforms.Compose([
+                transforms.ToTensor(),
+                transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+            ])
+
+        elif self.dataset == 'usps':
             self.transform_train = transforms.Compose([
                 transforms.RandomCrop(32, padding=4),
                 transforms.ToTensor(),
