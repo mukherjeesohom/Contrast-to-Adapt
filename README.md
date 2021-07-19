@@ -34,6 +34,8 @@ Command for inference (noisy label generation):
 python eval_model.py --source usps --target mnist --load_epoch 190 --save_json --all_use yes
 ```
 
+* Trained models: https://drive.google.com/drive/folders/1hkTvyaBJWgbTGsR_Y5WaKTaOkvOWIMUK?usp=sharing
+
 ## 2. SimCLR on Target data
 
 Training:
