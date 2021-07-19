@@ -80,7 +80,8 @@ class cifar_dataset(Dataset):
                 self.test_label = label_train[inds][:6562]
                 img_train = img_train * 255
                 test_data = img_train.reshape((img_train.shape[0], 1, 28, 28))
-                self.test_data = test_data.transpose(0, 2, 3, 1).astype(np.float32)
+                test_data = test_data.transpose(0, 2, 3, 1).astype(np.float32)
+                self.test_data = (np.concatenate([test_data, test_data, test_data], 3)).astype(np.uint8)
 
 
         else:
@@ -130,6 +131,7 @@ class cifar_dataset(Dataset):
                 img_train = img_train * 255
                 train_data = img_train.reshape((img_train.shape[0], 1, 28, 28))
                 train_data = train_data.transpose(0, 2, 3, 1).astype(np.float32)
+                train_data = (np.concatenate([train_data, train_data, train_data], 3)).astype(np.uint8)
 
 
             # Loading noisy labels [size of the list = training set]
