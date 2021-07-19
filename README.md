@@ -34,15 +34,19 @@ Command for inference (noisy label generation):
 python eval_model.py --source usps --target mnist --load_epoch 190 --save_json --all_use yes
 ```
 
+* Trained models: https://drive.google.com/drive/folders/1hkTvyaBJWgbTGsR_Y5WaKTaOkvOWIMUK?usp=sharing
+
 ## 2. SimCLR on Target data
 
 Training:
 ```
 conda activate simclr
-python run.py -data ./datasets -dataset_name svhn --log-every-n-steps 2 --epochs 10
+python run.py -data ./datasets -dataset_name svhn --log-every-n-steps 5 --epochs 100
 ```
 
 Change ```dataset_name``` flag as ```mnist```, ```svhn```, or ```usps``` for different datasets. 
+
+* Trained models: https://drive.google.com/drive/folders/11C61TWc7SQTYGDXzsbVqO_W3PkETjhET?usp=sharing
 
 
 ## 3. C2D
