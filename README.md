@@ -1,8 +1,6 @@
 # HLCV-Project
 HLCV SS 2021 Project
 
-Models: https://drive.google.com/drive/folders/1wVFthGdpVYGhPqxbEIOsDSWPMbrOY125?usp=sharing
-
 
 ## 1. Training model on source and Noisy label generation
 
