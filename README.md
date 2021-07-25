@@ -1,10 +1,6 @@
 # HLCV-Project
 HLCV SS 2021 Project
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 7a7dae1050792085e0f65f2e21781733ccc3e130
 ## 1. Training model on source and Noisy label generation
 
 ### Setup
