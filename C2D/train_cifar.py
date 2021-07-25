@@ -21,6 +21,7 @@ def save_losses(input_loss, exp):
 
 def eval_train(model, eval_loader, CE, all_loss, epoch, net, device, r, stats_log):
     model.eval()
+    # Length = train dataset size (55000 for mnist and 6562 for usps)
     losses = torch.zeros(55000)
     losses_clean = torch.zeros(55000)
     with torch.no_grad():
