@@ -7,3 +7,4 @@ C2D/data/cifar-10/*
 *.png
 *.jpg
 *.zip
+!readme_images/*
