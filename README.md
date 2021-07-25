@@ -40,7 +40,7 @@ python eval_model.py --source usps --target mnist --load_epoch 190 --save_json -
 ## 2. SimCLR on Target data
 Self-supervised learning of unlabeled target data (Xt) with contrastive loss, using SimCLR. We use the encoder trained in an unsupervised fashion on the contrastive learning task to initialize the networks for DivideMix. 
 
-![plot](readme_images/simclr_framework.png)
+<img src="readme_images/simclr_framework.png" width="500">
 
 Training:
 ```
@@ -117,10 +117,10 @@ python3 main_cifar.py --num_epochs 1 --batch_size 4  --r 0.8 --lambda_u 500 --da
 | MCD [8]                  |    ✓   | 96.5          | 96.2          | 94.1          |
 | STAR [9]                 |    ✓   | 97.8          | 98.8          | 97.7          |
 | SHOT [10]                |    ✕   | 97.9          | 98.9          | 98.2          |
-| SSNLL [1]                |    ✕   | 97.1          | 99.3          | 98.8          |
+| SSNLL [1]                |    ✕   | 97.1          | **99.3**          | **98.8**          |
 | SSNLL (no preprocessing) |    ✕   | ~57           | ~93           | ~70           |
 | Pre-trained Source Model |    -   | 71.95         | 60.28         | 63.53         |
-| Contrast to Adapt (OURS) |    ✕   | 98.04         | 94.04         | 91.81         |
+| Contrast to Adapt (OURS) |    ✕   | **98.04**         | 94.04         | 91.81         |
 
 Our result is reported as average of three repetitions. ✓ denotes source-based UDA and ✕ denotes source-free UDA. The best results for each task has been highlighted in bold. ​
 
