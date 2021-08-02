@@ -20,7 +20,7 @@ Using source data (Xs, Ys), we create pre-trained classification model f. Then, 
 Pairs of dataset to be used:
 * MNIST -> USPS
 * USPS -> MNIST
-* SVHN -> MNIST​
+* SVHN -> MNIST
 
 ** use `--help` token with python file to know more about the parameters.
 
@@ -122,10 +122,9 @@ python3 main_cifar.py --num_epochs 1 --batch_size 4  --r 0.8 --lambda_u 500 --da
 | Pre-trained Source Model |    -   | 71.95         | 60.28         | 63.53         |
 | Contrast to Adapt (OURS) |    ✕   | **98.04**         | 94.04         | 91.81         |
 
-Our result is reported as average of three repetitions. ✓ denotes source-based UDA and ✕ denotes source-free UDA. The best results for each task has been highlighted in bold. ​
+Our result is reported as average of three repetitions. ✓ denotes source-based UDA and ✕ denotes source-free UDA. The best results for each task has been highlighted in bold.
 
 ## Contributors
- 
 This code has been written for the High Level Computer Vision (HLCV) course project at Saarland University for Summer Semester 2021. Following are the contributors:
 
 - [Arpit Jadon](https://github.com/arpit-jadon) (Student Number: 7010483)
@@ -133,7 +132,7 @@ This code has been written for the High Level Computer Vision (HLCV) course proj
 - [Sohom Mukherjee](https://github.com/mukherjeesohom) (Student Number: 7010515)
 
 ## Acknowledgements
+We would like to acknowledge the following code repositories on which our code is based:
 - [MCD](https://github.com/mil-tokyo/MCD_DA)
 - [SimCLR](https://github.com/sthalles/SimCLR)
 - [C2D](https://github.com/ContrastToDivide/C2D)
-
