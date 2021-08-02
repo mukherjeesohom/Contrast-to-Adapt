@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "./condor_exec.exe", line 9, in <module>
-    import torch.backends.cudnn as cudnn
-ModuleNotFoundError: No module named 'torch'
