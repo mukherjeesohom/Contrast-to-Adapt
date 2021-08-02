@@ -132,3 +132,8 @@ This code has been written for the High Level Computer Vision (HLCV) course proj
 - [Nikhil Paliwal](https://github.com/nik1806) (Student Number: 7009915)
 - [Sohom Mukherjee](https://github.com/mukherjeesohom) (Student Number: 7010515)
 
+## Acknowledgements
+- [MCD](https://github.com/mil-tokyo/MCD_DA)
+- [SimCLR](https://github.com/sthalles/SimCLR)
+- [C2D](https://github.com/ContrastToDivide/C2D)
+
