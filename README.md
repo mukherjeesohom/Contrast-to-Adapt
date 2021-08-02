@@ -40,7 +40,7 @@ python eval_model.py --source usps --target mnist --load_epoch 190 --save_json -
 ## 2. SimCLR on Target data
 Self-supervised learning of unlabeled target data (Xt) with contrastive loss, using SimCLR. We use the encoder trained in an unsupervised fashion on the contrastive learning task to initialize the networks for DivideMix. 
 
-<img src="readme_images/simclr_framework1.png" width="500">
+<img src="readme_images/simclr_framework.png" width="500">
 
 Training:
 ```
