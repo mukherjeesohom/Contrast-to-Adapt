@@ -1,6 +1,6 @@
 # Contrast to Adapt: Noisy Label Learning with Contrastive Warmup for Source-Free Unsupervised Domain Adaptation​
 
-In  this  work  we  try  to  solve  the  problem  of  source-free  unsupervised  domain  adaptation(UDA), where we have access to pre-trained source data model and unlabelled target data to perform domain adaptation.  Source-free UDA is formulated as a noisy label learning prob-lem and solved using self-supervised noisy label learning (NLL) approaches.  The proposed method involves generating pseudo-labels on target dataset using a pre-trained model, fol-lowed by self-supervised learning of unlabeled target data with contrastive loss and NLL with DivideMix.  
+In  this  work  we  try  to  solve  the  problem  of  source-free  unsupervised  domain  adaptation (UDA), where we have access to pre-trained source data model and unlabelled target data to perform domain adaptation.  Source-free UDA is formulated as a noisy label learning prob-lem and solved using self-supervised noisy label learning (NLL) approaches.  The proposed method involves generating pseudo-labels on target dataset using a pre-trained model, fol-lowed by self-supervised learning of unlabeled target data with contrastive loss and NLL with DivideMix.  
 
 ### Overview of the proposed method
 ![plot](readme_images/Flowchart.jpg)
